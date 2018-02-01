@@ -1,0 +1,5 @@
+.gitignore
+*.pyc
+build/
+dist/
+ponyadmin.egg-info/
