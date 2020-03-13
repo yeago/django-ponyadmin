@@ -1,4 +1,4 @@
-import csv
+import unicodecsv as csv
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -32,6 +32,8 @@ def printable(modeladmin, request, queryset):
         "headers": headers,
         "items": items,
     })
+
+
 printable.short_description = "Printable"
 
 
@@ -57,6 +59,8 @@ def csv_export(modeladmin, request, queryset):
     for item in queryset:
         writer.writerow(modeladmin.csv_row(request, item))
     return response
+
+
 csv_export.short_description = "Export to Excel"
 
 
