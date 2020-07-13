@@ -3,7 +3,7 @@ import unicodecsv as csv
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 
 
 class HTMLRemover(HTMLParser):
