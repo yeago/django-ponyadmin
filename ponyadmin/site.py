@@ -1,6 +1,6 @@
 from functools import update_wrapper
 from django.conf.urls import url, include
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib import admin
 from django.contrib.contenttypes import views as contenttype_views
 
