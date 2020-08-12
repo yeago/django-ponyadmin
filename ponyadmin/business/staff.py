@@ -116,7 +116,7 @@ class AdminOnlyModelAdmin(AdminModelAdmin):
 
 class StaffAdminSite(BaseAdminSite):
     def has_permission(self, request):
-        if request.user.is_authenticated() and request.user.is_active:
+        if request.user.is_authenticated and request.user.is_active:
             return True
         return False
 
