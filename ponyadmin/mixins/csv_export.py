@@ -77,7 +77,7 @@ class CsvMixin(object):
                 try:
                     header.append(item.short_description)
                 except AttributeError:
-                    header.append(item.func_name)
+                    header.append(item.__name__)
                 continue
             header.append(item)
         return header
@@ -102,7 +102,7 @@ class CsvMixin(object):
                 if callable(getattr(self, item)):
                     item = getattr(self, item)
             if callable(item):
-                if item.func_name in self.csv_ignore:
+                if item.__name__ in self.csv_ignore:
                     continue
                 text = item(obj)
             else:
