@@ -8,6 +8,7 @@ from html.parser import HTMLParser
 
 class HTMLRemover(HTMLParser):
     def __init__(self):
+        super(HTMLRemover, self).__init__()
         self.reset()
         self.fed = []
 
