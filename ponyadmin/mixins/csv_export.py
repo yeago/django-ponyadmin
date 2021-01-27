@@ -88,7 +88,7 @@ class CsvMixin(object):
         htmlremover = HTMLRemover()
         htmlremover.feed('%s' % val)
         val = htmlremover.get_data()
-        return val.replace('&nbsp;', '').encode("utf-8")
+        return val.replace('&nbsp;', '')
 
     def csv_row(self, request, obj):
         row = []
