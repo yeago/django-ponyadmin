@@ -83,13 +83,14 @@ class CsvMixin(object):
             header.append(item)
         return header
 
+    def clean_csv_value(self, val):
+        val = '%s' % val
+        htmlremover = HTMLRemover()
+        htmlremover.feed('%s' % val)
+        val = htmlremover.get_data()
+        return val.replace('&nbsp;', '').encode("utf-8")
+
     def csv_row(self, request, obj):
-        def clean(val):
-            val = '%s' % val
-            htmlremover = HTMLRemover()
-            htmlremover.feed('%s' % val)
-            val = htmlremover.get_data()
-            return val.replace('&nbsp;', '').encode("utf-8")
         row = []
         for item in self.get_list_display(request):
             if item in self.csv_ignore:
@@ -115,10 +116,10 @@ class CsvMixin(object):
                         text = getattr(obj, 'get_%s_display' % item)()
                     except AttributeError:
                         text = attr
-            row.append(clean(text or "-"))
+            row.append(self.clean_csv_value(text or "-"))
 
         try:
-            row.extend(map(clean, self.csv_extra_items(request, obj)))
+            row.extend(list(map(self.clean_csv_value, self.csv_extra_items(request, obj))))
         except NotImplementedError:
             pass
         return row
