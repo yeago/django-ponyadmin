@@ -5,7 +5,7 @@ from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from django.http import HttpResponseRedirect
 from django.contrib.admin.options import IS_POPUP_VAR, TO_FIELD_VAR
 from django.utils.html import escape
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.template.response import SimpleTemplateResponse
 
 
