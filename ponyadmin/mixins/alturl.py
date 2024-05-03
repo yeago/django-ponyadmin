@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.urls import reverse
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from django.http import HttpResponseRedirect
 from django.contrib.admin.options import IS_POPUP_VAR, TO_FIELD_VAR
@@ -30,8 +30,8 @@ class AltUrlMixin(object):
         self.message_user(
             request,
             _('The %(name)s "%(obj)s" was deleted successfully.') % {
-                'name': force_text(opts.verbose_name),
-                'obj': force_text(obj_display),
+                'name': force_str(opts.verbose_name),
+                'obj': force_str(obj_display),
             }, messages.SUCCESS)
 
         if self.has_change_permission(request, None):
@@ -105,7 +105,7 @@ class AltUrlMixin(object):
         """
         opts = obj._meta
         preserved_filters = self.get_preserved_filters(request)
-        msg_dict = {'name': force_text(opts.verbose_name), 'obj': force_text(obj)}
+        msg_dict = {'name': force_str(opts.verbose_name), 'obj': force_str(obj)}
         # Here, we distinguish between different save types by checking for
         # the presence of keys in request.POST.
 
@@ -165,7 +165,7 @@ class AltUrlMixin(object):
         opts = self.model._meta
         preserved_filters = self.get_preserved_filters(request)
 
-        msg_dict = {'name': force_text(opts.verbose_name), 'obj': force_text(obj)}
+        msg_dict = {'name': force_str(opts.verbose_name), 'obj': force_str(obj)}
         if "_continue" in request.POST:
             msg = _('The %(name)s "%(obj)s" was changed successfully. You may edit it again below.') % msg_dict
             self.message_user(request, msg, messages.SUCCESS)
