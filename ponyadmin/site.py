@@ -1,5 +1,5 @@
 from functools import update_wrapper
-from django.conf.urls import url, include
+from django.urls import path, re_path, include
 from django.urls import reverse
 from django.contrib import admin
 from django.contrib.contenttypes import views as contenttype_views
@@ -34,15 +34,15 @@ class BaseAdminSite(admin.AdminSite):
 
         # Admin-site-wide views.
         urlpatterns = [
-            url(r'^$', wrap(self.index), name='index'),
-            url(r'^admin/$', wrap(self.index), name='index'),
-            url(r'^login/$', self.login, name='login'),
-            url(r'^logout/$', wrap(self.logout), name='logout'),
-            url(r'^password_change/$', wrap(self.password_change, cacheable=True), name='password_change'),
-            url(r'^password_change/done/$', wrap(self.password_change_done, cacheable=True),
+            path(r'^$', wrap(self.index), name='index'),
+            path(r'^admin/$', wrap(self.index), name='index'),
+            path(r'^login/$', self.login, name='login'),
+            path(r'^logout/$', wrap(self.logout), name='logout'),
+            path(r'^password_change/$', wrap(self.password_change, cacheable=True), name='password_change'),
+            path(r'^password_change/done/$', wrap(self.password_change_done, cacheable=True),
                 name='password_change_done'),
-            url(r'^jsi18n/$', wrap(self.i18n_javascript, cacheable=True), name='jsi18n'),
-            url(r'^r/(?P<content_type_id>\d+)/(?P<object_id>.+)/$', wrap(contenttype_views.shortcut),
+            path(r'^jsi18n/$', wrap(self.i18n_javascript, cacheable=True), name='jsi18n'),
+            re_path(r'^r/(?P<content_type_id>\d+)/(?P<object_id>.+)/$', wrap(contenttype_views.shortcut),
                 name='view_on_site'),
         ]
 
@@ -51,7 +51,7 @@ class BaseAdminSite(admin.AdminSite):
         valid_app_labels = []
         for model, model_admin in self._registry.items():
             urlpatterns += [
-                url(r'^%s/%s/' % (model._meta.app_label, model._meta.model_name), include(model_admin.urls)),
+                path(r'^%s/%s/' % (model._meta.app_label, model._meta.model_name), include(model_admin.urls)),
             ]
             if model._meta.app_label not in valid_app_labels:
                 valid_app_labels.append(model._meta.app_label)
@@ -61,6 +61,6 @@ class BaseAdminSite(admin.AdminSite):
         if valid_app_labels:
             regex = r'^(?P<app_label>' + '|'.join(valid_app_labels) + ')/$'
             urlpatterns += [
-                url(regex, wrap(self.app_index), name='app_list'),
+                re_path(regex, wrap(self.app_index), name='app_list'),
             ]
         return urlpatterns
