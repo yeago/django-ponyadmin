@@ -4,7 +4,7 @@ from ponyadmin.filters import RelatedFieldListFilter
 from django.db.models.query_utils import Q
 
 from django.conf import settings
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.module_loading import import_string
 
 underlings_plus_self = import_string(settings.UNDERLINGS_PLUS_SELF)
@@ -133,7 +133,7 @@ class StaffFilter(RelatedFieldListFilter):
         limit_choices_to = {'pk__in': set(qs or model_admin.get_queryset(request).values_list(field_path, flat=True))}
         rel_model = field.remote_field.model
         lst = [(getattr(x, field.remote_field.get_related_field().attname),
-               smart_text(x))
+               smart_str(x))
                for x in rel_model._default_manager.complex_filter(
                    limit_choices_to).order_by('-is_active', 'last_name')]
 
