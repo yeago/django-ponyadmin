@@ -15,7 +15,7 @@ class QChangeList(ChangeList):
     def get_queryset(self, request):
         # First, we collect all the declared list filters.
         (self.filter_specs, self.has_filters, remaining_lookup_params,
-         filters_use_distinct) = self.get_filters(request)
+         may_have_duplicates, has_active_filters) = self.get_filters(request)
 
         # Then, we let every list filter modify the queryset to its liking.
         # or return a Q-like will be applied all together afterwards
@@ -72,7 +72,7 @@ class QChangeList(ChangeList):
         qs, search_use_distinct = self.model_admin.get_search_results(request, qs, self.query)
 
         # Remove duplicates from results, if necessary
-        if filters_use_distinct | search_use_distinct:
+        if may_have_duplicates or search_use_distinct:
             return qs.distinct()
         else:
             return qs
