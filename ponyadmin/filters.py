@@ -53,7 +53,7 @@ class SingleTextInputFilter(admin.SimpleListFilter):
 
     def choices(self, cl):
         blank_choice = {
-            'selected': self.value() is "_null",
+            'selected': self.value() == "_null",
             'query_string': cl.get_query_string({self.parameter_name: '_null'}, [self.parameter_name]),
             'display': 'Blank',
         }
