@@ -26,8 +26,11 @@ class QChangeList(ChangeList):
             new_qs_or_q = filter_spec.queryset(request, qs)
             if new_qs_or_q is not None:
                 if hasattr(filter_spec, 'lookup_val') and hasattr(filter_spec, 'lookup_kwarg'):
-                    if getattr(filter_spec, 'lookup_val'):
-                        qlikes.append(Q(**{filter_spec.lookup_kwarg: filter_spec.lookup_val}))
+                    val = getattr(filter_spec, 'lookup_val')
+                    if val:
+                        if isinstance(val, list) and len(val) == 1:
+                            val = val[0]
+                        qlikes.append(Q(**{filter_spec.lookup_kwarg: val}))
                         continue
                 if isinstance(new_qs_or_q, Q):
                     qlikes.append(new_qs_or_q)
