@@ -12,7 +12,7 @@ class QChangeList(ChangeList):
     object all within one filter() clause here
     """
 
-    def get_queryset(self, request):
+    def get_queryset(self, request, exclude_parameters=None):
         # First, we collect all the declared list filters.
         (self.filter_specs, self.has_filters, remaining_lookup_params,
          may_have_duplicates, has_active_filters) = self.get_filters(request)
